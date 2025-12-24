@@ -1,7 +1,24 @@
+import { useState } from 'react'
+
 function App() {
+  const [board, setBoard] = useState(Array(9).fill(null))
+  const [isXTurn, setIsXTurn] = useState(true)
+
+  const handleClick = (index) => {
+    // prevent overwriting a cell
+    if (board[index] !== null) return
+
+    const newBoard = [...board]
+    newBoard[index] = isXTurn ? 'X' : 'O'
+
+    setBoard(newBoard)
+    setIsXTurn(!isXTurn)
+  }
+
   return (
     <div style={{ textAlign: 'center' }}>
       <h1>Tic Tac Toe</h1>
+      <h2>Turn: {isXTurn ? 'X' : 'O'}</h2>
 
       <div
         style={{
@@ -12,15 +29,15 @@ function App() {
           marginTop: '20px'
         }}
       >
-        <div style={cellStyle}></div>
-        <div style={cellStyle}></div>
-        <div style={cellStyle}></div>
-        <div style={cellStyle}></div>
-        <div style={cellStyle}></div>
-        <div style={cellStyle}></div>
-        <div style={cellStyle}></div>
-        <div style={cellStyle}></div>
-        <div style={cellStyle}></div>
+        {board.map((cell, index) => (
+          <div
+            key={index}
+            style={cellStyle}
+            onClick={() => handleClick(index)}
+          >
+            {cell}
+          </div>
+        ))}
       </div>
     </div>
   )
